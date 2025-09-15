@@ -4,7 +4,7 @@ import AccountItem from "@/components/AccountItem.vue";
 </script>
 
 <template>
-  <AccountItem></AccountItem>
+  <AccountForm></AccountForm>
 </template>
 
 <style scoped></style>
