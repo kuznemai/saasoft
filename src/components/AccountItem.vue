@@ -1,45 +1,59 @@
-<script setup>
-import { useAccountsStore } from "@/store/accounts.js";
+<script lang="ts" setup>
 import { reactive } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
+import { useAccountsStore, Account } from "@/store/accounts";
+
 const store = useAccountsStore();
 
-const props = defineProps({
-  account: Object,
-});
+interface Errors {
+  login: boolean;
+  password: boolean;
+  type: boolean;
+}
 
-const errors = reactive({
+const props = defineProps<{
+  account: Account;
+}>();
+
+const errors = reactive<Errors>({
   login: false,
   password: false,
   type: false,
 });
+
 function validate() {
   errors.login = false;
   errors.password = false;
   errors.type = false;
-  props.account.login = props.account.login.trim();
-  if (!props.account.login || props.account.login.trim() === "") {
-    errors.login = true;
-  }
 
-  if (!props.account.type) {
-    errors.type = true;
-  }
+  props.account.login = props.account.login.trim();
+  if (!props.account.login) errors.login = true;
+  if (!props.account.type) errors.type = true;
 
   if (props.account.type === "Локальная") {
-    if (!props.account.password || props.account.password.trim() === "") {
+    if (!props.account.password || props.account.password.trim() === "")
       errors.password = true;
-    } else {
-      props.account.password = null;
-    }
+  } else {
+    props.account.password = null;
   }
 }
 
-function trimOnBlur(field) {
+function trimOnBlur(field: keyof Account) {
   if (props.account[field] && typeof props.account[field] === "string") {
-    props.account[field] = props.account[field].trim();
+    props.account[field] = props.account[field].trim() as any;
   }
   validate();
+  store.saveRecords();
+}
+
+function parseLabels(labelsString: string) {
+  props.account.labels = labelsString
+    .split(";")
+    .map((label) => label.trim())
+    .filter((label) => label)
+    .map((label) => ({ text: label }));
+
+  store.saveRecords();
 }
 </script>
 
@@ -49,7 +63,7 @@ function trimOnBlur(field) {
       v-model:value="props.account.labelsString"
       placeholder="Метки через ;"
       :maxlength="50"
-      @blur="trimOnBlur('labelsString')"
+      @blur="parseLabels(props.account.labelsString)"
       style="width: 150px"
     />
     <a-select
@@ -62,7 +76,6 @@ function trimOnBlur(field) {
       <a-select-option value="LDAP">LDAP</a-select-option>
     </a-select>
 
-    <!-- Flex контейнер для логина и пароля -->
     <div class="login-password-wrapper">
       <a-input
         v-model:value="props.account.login"

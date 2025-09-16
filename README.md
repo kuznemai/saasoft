@@ -1,29 +1,16 @@
-# saasoft
+# Vue Accounts Manager
 
-This template should help get you started developing with Vue 3 in Vite.
 
-## Recommended IDE Setup
+Инструкция по запуску:
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-## Customize configuration
+1. Установить зависимости: `npm install` или `yarn`
+2. Запустить dev: `npm run dev`
+3. Открыть http://localhost:5173
 
-See [Vite Configuration Reference](https://vite.dev/config/).
 
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+Описание:
+- Vue 3 + TypeScript + Pinia
+- UI: Ant Design Vue
+- Сохранение в localStorage
+- Валидация при blur/change
