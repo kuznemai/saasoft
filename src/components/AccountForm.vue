@@ -40,8 +40,12 @@ const showPassword = computed(() => {
       </div>
     </div>
 
-    <div v-for="item in store.accounts" :key="item.id" class="account_item">
-      <AccountItem :account="item"></AccountItem>
+    <div
+      v-for="(item, index) in store.accounts"
+      :key="item.id"
+      class="account_item"
+    >
+      <AccountItem :account="item" :indexAccount="index"></AccountItem>
     </div>
   </div>
 </template>

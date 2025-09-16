@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive } from "vue";
+import { reactive, watch, ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useAccountsStore, Account } from "@/store/accounts";
 
@@ -13,6 +13,7 @@ interface Errors {
 
 const props = defineProps<{
   account: Account;
+  indexAccount: Number;
 }>();
 
 const errors = reactive<Errors>({
@@ -47,7 +48,8 @@ function trimOnBlur(field: keyof Account) {
 }
 
 function parseLabels(labelsString: string) {
-  props.account.labels = labelsString
+  console.log("labelsString", labelsString);
+  store.accounts[props.indexAccount].labels = labelsString
     .split(";")
     .map((label) => label.trim())
     .filter((label) => label)
@@ -55,15 +57,28 @@ function parseLabels(labelsString: string) {
 
   store.saveRecords();
 }
+
+const labelToString = ref("");
+
+watch(
+  props.account.labels,
+  () => {
+    labelToString.value = props.account.labels.reduce(
+      (acc, elem) => (acc += `${elem.text};`),
+      "",
+    );
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
   <div class="account-row">
     <a-input
-      v-model:value="props.account.labelsString"
+      :value="labelToString"
       placeholder="Метки через ;"
       :maxlength="50"
-      @blur="parseLabels(props.account.labelsString)"
+      @blur="parseLabels($event.target.value)"
       style="width: 150px"
     />
     <a-select

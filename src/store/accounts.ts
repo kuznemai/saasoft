@@ -20,7 +20,6 @@ export const useAccountsStore = defineStore("accounts", () => {
   function addAccount() {
     accounts.value.push({
       id: Date.now(),
-      labelsString: "",
       labels: [],
       type: "",
       login: "",
