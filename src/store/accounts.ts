@@ -7,7 +7,6 @@ interface Label {
 
 export interface Account {
   id: number;
-  labelsString: string;
   labels: Label[];
   type: "Локальная" | "LDAP" | "";
   login: string;
