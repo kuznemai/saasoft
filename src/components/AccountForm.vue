@@ -94,7 +94,7 @@ const showPassword = computed(() => {
 
 .accounts-header {
   display: grid;
-  grid-template-columns: 150px 140px 1fr 1fr 40px; /* ширины как у полей */
+  grid-template-columns: 150px 140px 1fr 1fr 40px;
   gap: 10px;
   margin-bottom: 8px;
   text-align: left;
