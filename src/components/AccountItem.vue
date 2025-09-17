@@ -61,14 +61,18 @@ function parseLabels(labelsString: string) {
 const labelToString = ref("");
 
 watch(
-  props.account.labels,
-  () => {
-    labelToString.value = props.account.labels.reduce(
-      (acc, elem) => (acc += `${elem.text};`),
-      "",
-    );
+  () => props.account.labels,
+  (newLabels) => {
+    if (newLabels.length === 0) {
+      labelToString.value = "";
+      return;
+    }
+    labelToString.value = newLabels
+      .map((elem) => elem.text.trim())
+      .filter((text) => text)
+      .join("; ");
   },
-  { immediate: true },
+  { immediate: true, deep: true },
 );
 </script>
 
